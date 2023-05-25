@@ -5,32 +5,34 @@ import {logoList} from '../assets/exportImg';
 import {GetUserListsBouchon} from '../services/bouchons/UserLists';
 import IUserList from '../interfaces/IUserList';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import { verifie } from '../assets/exportImg';
 
-export default function AllLists(): JSX.Element {
-  const [lists, setLists] = useState<IUserList[]>(GetUserListsBouchon());
+interface Props {
+  listElements: string[];
+}
+
+export default function DisplayListElements({
+  listElements,
+}: Props): JSX.Element {
   const navigation: any = useNavigation();
   return (
     <View style={styles.buttonContainer}>
-      {lists.map((list: {titre: string; nombreElements: string}, index) => {
+      {listElements.map((element, index) => {
         return (
-          <TouchableOpacity
+          <View
             key={index}
             style={[
               GlobalStyle.ShadowLg,
               GlobalStyle.primaryBgColor,
               styles.button,
-            ]}
-            onPress={() =>
-              navigation.navigate('Affichage liste', {list: lists[index]})
-            }>
-            <Image source={logoList} style={styles.logoListIcon} />
+            ]}>
             <Text style={[GlobalStyle.subtitle1, styles.listButtonTitre]}>
-              {list.titre}
+              {element}
             </Text>
-            <Text style={(GlobalStyle.subtitle1, styles.listButtonNombre)}>
-              {list.nombreElements}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.cercleButton}>
+              <Image source={verifie} style={styles.resizeCircleImg} />
+            </TouchableOpacity>
+          </View>
         );
       })}
     </View>
@@ -46,9 +48,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 5,
     alignItems: 'center',
-    borderRadius: 10,
-    marginBottom: 10,
-    borderWidth: 1,
+    borderRadius: 5,
+    marginVertical: 5,
     borderColor: '#55482d',
   },
   logoListIcon: {
@@ -63,5 +64,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     color: 'black',
+  },
+  cercleButton: {
+    padding: 5,
+    borderRadius: 20,
+  },
+  resizeCircleImg: {
+    height: 35,
+    width: 35,
   },
 });
